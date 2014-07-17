@@ -57,6 +57,9 @@
         },
         "com.rjfun.cordova.plugin.iad": {
             "PACKAGE_NAME": "com.rjfun.gomoku2"
+        },
+        "com.rjfun.cordova.plugin.appleiap": {
+            "PACKAGE_NAME": "com.rjfun.gomoku2"
         }
     },
     "dependent_plugins": {}

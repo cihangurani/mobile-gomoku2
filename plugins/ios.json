@@ -28,7 +28,7 @@
                     "StoreKit.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "MessageUI.framework": [
@@ -83,6 +83,10 @@
                         {
                             "xml": "<feature name=\"iAd\"><param name=\"ios-package\" value=\"CDViAd\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppPurchaseManager\"><param name=\"ios-package\" value=\"InAppPurchaseManager\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -100,6 +104,9 @@
             "PACKAGE_NAME": "com.rjfun.gomoku2"
         },
         "com.rjfun.cordova.plugin.iad": {
+            "PACKAGE_NAME": "com.rjfun.gomoku2"
+        },
+        "com.rjfun.cordova.plugin.appleiap": {
             "PACKAGE_NAME": "com.rjfun.gomoku2"
         }
     },

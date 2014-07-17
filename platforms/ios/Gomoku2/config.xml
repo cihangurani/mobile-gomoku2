@@ -28,6 +28,9 @@
     <feature name="iAd">
         <param name="ios-package" value="CDViAd" />
     </feature>
+    <feature name="InAppPurchaseManager">
+        <param name="ios-package" value="InAppPurchaseManager" />
+    </feature>
     <name>Gomoku2</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

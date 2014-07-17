@@ -52,6 +52,8 @@
 		125A432E61D349B6AC482523 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62060E5D3D1E4D1ABB0E9414 /* CoreTelephony.framework */; };
 		E32A380BD9A3407B8C236A77 /* CDViAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 604676AF930D41F78C060028 /* CDViAd.m */; };
 		6BBECCA569BB401496B0F41C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7494BDD2394C436C86E5BF0F /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		1078FC5DA9A840F586AC4DAA /* InAppPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D5A75160374BF998F2FF36 /* InAppPurchaseManager.m */; };
+		1AB12512FC364ACC9426BDA1 /* SKProduct+LocalizedPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = F1E4B7136CF343AFABD8F3ED /* SKProduct+LocalizedPrice.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +148,10 @@
 		604676AF930D41F78C060028 /* CDViAd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDViAd.m"; path = "com.rjfun.cordova.plugin.iad/CDViAd.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		5EC5B0B91E91401EBB1709C5 /* CDViAd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDViAd.h"; path = "com.rjfun.cordova.plugin.iad/CDViAd.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		7494BDD2394C436C86E5BF0F /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "iAd.framework"; path = "System/Library/Frameworks/iAd.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		B5D5A75160374BF998F2FF36 /* InAppPurchaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "InAppPurchaseManager.m"; path = "com.rjfun.cordova.plugin.appleiap/InAppPurchaseManager.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		F1E4B7136CF343AFABD8F3ED /* SKProduct+LocalizedPrice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "SKProduct+LocalizedPrice.m"; path = "com.rjfun.cordova.plugin.appleiap/SKProduct+LocalizedPrice.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		C906E54086724987B947C28C /* InAppPurchaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "InAppPurchaseManager.h"; path = "com.rjfun.cordova.plugin.appleiap/InAppPurchaseManager.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		FB96B0AA603944C9B9462D35 /* SKProduct+LocalizedPrice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "SKProduct+LocalizedPrice.h"; path = "com.rjfun.cordova.plugin.appleiap/SKProduct+LocalizedPrice.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,6 +312,10 @@
 				5CD455625F2045E18A95BD10 /* GADRequestError.h */,
 				604676AF930D41F78C060028 /* CDViAd.m */,
 				5EC5B0B91E91401EBB1709C5 /* CDViAd.h */,
+				B5D5A75160374BF998F2FF36 /* InAppPurchaseManager.m */,
+				F1E4B7136CF343AFABD8F3ED /* SKProduct+LocalizedPrice.m */,
+				C906E54086724987B947C28C /* InAppPurchaseManager.h */,
+				FB96B0AA603944C9B9462D35 /* SKProduct+LocalizedPrice.h */,
 			);
 			name = Plugins;
 			path = "Gomoku2/Plugins";
@@ -504,6 +514,8 @@
 				F5A10419F32D421986FEDF1E /* LowLatencyAudioAsset.m in Sources */,
 				68AD46DE93DA41849CA66849 /* CDVAdMob.m in Sources */,
 				E32A380BD9A3407B8C236A77 /* CDViAd.m in Sources */,
+				1078FC5DA9A840F586AC4DAA /* InAppPurchaseManager.m in Sources */,
+				1AB12512FC364ACC9426BDA1 /* SKProduct+LocalizedPrice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
