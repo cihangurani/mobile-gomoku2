@@ -26,7 +26,7 @@ hotjs.i18n.put('zh', {
 	'notstartedcannotdo':'不需要这样做。',
 	'nogold':'金币不够',
 	'nogoldcannotdo':'需要金币才行呢。',
-	'buy':'充值',
+	'buy':'金币',
 	'watchad':'看广告送好礼',
 	'buyhappy':'轻松充值，欢乐游戏',
     'exchangefirsthand' : '交换先手',
