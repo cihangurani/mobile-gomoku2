@@ -1,0 +1,24 @@
+{
+    "version": "1.1.0",
+    "name": "com.rjfun.cordova.plugin.admob",
+    "cordova_name": "AdMob",
+    "description": "Add AdMob support to your cordova apps or games to earn revenue",
+    "license": "MIT",
+    "repo": "https://github.com/floatinghotpot/cordova-plugin-admob.git",
+    "issue": "https://github.com/floatinghotpot/cordova-plugin-admob/issues",
+    "keywords": [
+        "ad",
+        "admob"
+    ],
+    "platforms": [
+        "android",
+        "ios",
+        "wp8"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=2.9"
+        }
+    ]
+}
