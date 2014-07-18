@@ -100,7 +100,9 @@ div.page {
     display: none;
 }
 div.userinfo {
-	top: 2px;
+    top: 55px;
+}
+div.userinfo {
 	display: block;
 	position: absolute;
 	margin: 0px;
@@ -435,6 +437,9 @@ td.dlg22 {
     img.dlgx { width:48px; height:48px; }
     body, div, td, button, p, span, input { font-size:24px; }
 
+    div.userinfo {
+        top: 95px;
+    }
     button.dialog {
         width: 192px;
         height: 96px;

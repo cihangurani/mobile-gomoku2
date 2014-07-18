@@ -14,6 +14,14 @@ var app_url = 'http://rjfun.com/gomoku2/';
 var autorun_url = app_url + 'autorun.js'; // will run when client start
 var share_link_url = app_url; // will share in social sharing
 
+var ad_options = {
+    admob_ios : 'ca-app-pub-6869992474017983/6582687956',
+    admob_android : 'ca-app-pub-6869992474017983/9536154357',
+    bannerAtTop : true,
+    overlap: true,
+    offsetTopBar: false,
+    isTesting : false
+};
 
 var using_iad = true;
 var enable_paypal_in_ios = false;
@@ -167,7 +175,7 @@ function restartGame(){
 }
 
 function onMyWin() {
-    resources.playAudio( ('audio/win.mp3'), true );
+    hotjs.Audio.play('win');
 	window.setTimeout( function(){
 		var peerN = 'peer' + app_data.opt.level;
 		var npc = NPC_config[ peerN ];
@@ -212,7 +220,7 @@ function onMyWin() {
 }
 
 function onMyLost() {
-    resources.playAudio( ('audio/fail.mp3'), true );
+    hotjs.Audio.play('fail');
     window.setTimeout(function() {
 		var peerN = 'peer' + app_data.opt.level;
 		var npc = NPC_config[ peerN ];
@@ -434,47 +442,13 @@ function updateDataShow() {
 
 function toggleAudio(){
 	if( app_data.opt.mute ) {
-		resources.muteAudio(true);
+        hotjs.Audio.mute(true);
 		$('img#icon-audio').attr('src', __DIR__('img/audiomute.png') );
 	} else {
-		resources.muteAudio(false);
+        hotjs.Audio.mute(false);
 		$('img#icon-audio').attr('src', __DIR__('img/audio.png') );
 	}
 };
-
-function toggleAd() {
-	app_data.opt.ad = !! app_data.opt.ad;
-
-	if( app_data.opt.ad ) {
-		$('img#icon-ad').attr('src', __DIR__('img/ad.png') );
-	} else {
-		$('img#icon-ad').attr('src', __DIR__('img/adoff.png') );
-	}
-
-	if( window.plugins ) {
-		if ( window.plugins.iAd ) {
-			window.plugins.iAd.showAd( app_data.opt.ad );
-		}
-		if( window.plugins.AdMob ) {
-			window.plugins.AdMob.showAd( app_data.opt.ad );
-		}
-	}
-}
-
-// loop play: music1.mp3, music2.mp3, music3.mp3
-//var music_index = 1;
-//function toggleMusic() {
-//	var music_file = __DIR__('audio/music' + music_index + '.mp3');
-//	if( app_data.opt.music ) {
-//		resources.playAudio(music_file, false, true);
-//		$('img#icon-music').attr('src', __DIR__('img/music.png') );
-//	} else {
-//		resources.stopAudio(music_file);
-//		$('img#icon-music').attr('src', __DIR__('img/musicoff.png') );
-//		music_index ++;
-//		if(music_index > 3) music_index = 1;
-//	}
-//}
 
 function toggleTip( b ) {
 	if( b ) {
@@ -788,7 +762,7 @@ function init_events() {
 	$(window).resize( game_resize );
 	
 	$('.clickable').on(touch_event, function(){
-		resources.playAudio( ('audio/click.mp3'), true );
+        hotjs.Audio.play('click');
 	});
 	
 	// iAd
@@ -1125,7 +1099,7 @@ function game_resize(w, h) {
             'bottom': (mh+5) + 'px'
         });
 
-		var h_info = $('div#user1').height() + 10;
+		var h_info = $('div#user1').position().top + $('div#user1').height() + 10;
 		var h_ctrl = $('div#controlleft').height();
 		var h_in = h - h_info - h_ctrl;
 		var m = Math.min(w, h_in) - 20;
@@ -1260,9 +1234,9 @@ function game_main() {
 	
 	function playMoveSound( player ){
 		if( player == 1 ) {
-			resources.playAudio( ('audio/move2.mp3'), true );
+            hotjs.Audio.play('move1');
 		} else {
-			resources.playAudio( ('audio/move.mp3'), true );
+            hotjs.Audio.play('move2');
 		}
 	}
 	
@@ -1366,14 +1340,14 @@ var res =
    __DIR__('img/loading16.gif')
   ];
 
-function readyToGo() {
+function loadApp() {
     // we only display ad if screen large enough
     var w = screen.width, h = screen.height;
     if((w <= 640) && (h <= w * 1.5)) {
         // iphone, screen not long enough
         //$('p.game-explanation').hide();
     } else {
-        hotjs.Ad.init();
+        hotjs.Ad.init( ad_options );
     }
 
     if( window.plugins ) {
@@ -1384,21 +1358,15 @@ function readyToGo() {
         }
     }
 
-//	resources.preloadMusic([
-//	                        ('audio/music1.mp3'),
-//	                        ('audio/music2.mp3'),
-//	                        ('audio/music3.mp3')
-//	                        ]);
-
-    resources.preloadFX([
-        ('audio/click.mp3'),
-        ('audio/hello.mp3'),
-        ('audio/magic.mp3'),
-        ('audio/win.mp3'),
-        ('audio/fail.mp3'),
-        ('audio/move2.mp3'),
-        ('audio/move.mp3')
-    ]);
+    var fx = {
+        click : 'audio/click.mp3',
+        win : 'audio/win.mp3',
+        fail : 'audio/fail.mp3',
+        move1 : 'audio/move.mp3',
+        move2 : 'audio/move2.mp3'
+    }
+    hotjs.Audio.init();
+    hotjs.Audio.preloadFXBatch( fx );
 
     resources.load( res, { ready: game_main } );
 }
@@ -1411,9 +1379,9 @@ function main()
 			{'background':'white'} );
 
     if(isMobileDevice()) {
-        document.addEventListener('deviceready', readyToGo, false);
+        document.addEventListener('deviceready', loadApp, false);
     } else {
-        readyToGo();
+        loadApp();
     }
 }
 
