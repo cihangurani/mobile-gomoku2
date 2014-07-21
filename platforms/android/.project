@@ -30,4 +30,11 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>www</name>
+			<type>2</type>
+			<location>/Users/liming/workspace/cordova-apps/gomoku2/www</location>
+		</link>
+	</linkedResources>
 </projectDescription>

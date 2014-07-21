@@ -7,13 +7,13 @@ apps['com.rjfun.gomoku2'] = {
 	screenshot : 'http://rjfun.com/gomoku2/screenshot.jpg',
 	desc : "最经典的五子棋，算法强，棋力厉害！",
 	android : {
-		version : '1.0.20140717',
-		vercode : 20140717,
-		url : 'http://rjfun.com/gomoku2/gomoku2-1.0.20140717.apk'
+		version : '1.0.20140722',
+		vercode : 20140722,
+		url : 'http://rjfun.com/gomoku2/gomoku2-1.0.20140722.apk'
 	},
 	ios : {
-		version : '1.0.20140717',
-		vercode : 20140717,
+		version : '1.0.20140722',
+		vercode : 20140722,
 		url : "javascript:alert('已经提交苹果审核，敬请期待！');" //"https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=896349671&mt=8" 
 	}
 };

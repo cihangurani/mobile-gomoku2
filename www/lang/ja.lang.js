@@ -16,6 +16,7 @@ hotjs.i18n.put('ja', {
 	'youwin': 'あなたは勝った!',
 	'youwin10gold':'10ゴルドを獲得！おめでとう！',
 	'playagain':'もう一回',
+	'nomore':'諦める',
 	'giveup' : '諦める',
 	'confirmgiveup' : '諦めて新しいゲームを始まろうか？',	
 	'confirmgiveup' : 'わずか　20 手だ。<br/>30 手まで諦めると負けると判明するよ。<br/></br>本当に諦めたいの？',	

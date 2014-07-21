@@ -6,9 +6,8 @@ var ai_go = ai_go || {};
 // configuration
 var app_key = 'com.rjfun.gomoku2';
 
-var app_key = 'com.rjfun.best2048';
-var app_version = '1.0.20140717';
-var app_vercode = 20140717;
+var app_version = '1.0.20140722';
+var app_vercode = 20140722;
 
 var app_url = 'http://rjfun.com/gomoku2/';
 var autorun_url = app_url + 'autorun.js'; // will run when client start
@@ -25,7 +24,6 @@ var ad_options = {
 
 var using_iad = true;
 var enable_paypal_in_ios = false;
-
 
 var paypal_app_id = 'APP-24H42331EP409445J'; // LIVE
 //var paypal_app_id = 'APP-80W284485P519543T'; // SANDBOX
@@ -99,11 +97,11 @@ function init_PayPalMPL() {
 }
 
 var NPC_config = {
-	peer1 : { level: 1, think_time: 500, attack_factor: 1.1, perwin: 5, winrate: 0.5 },	
-	peer2 : { level: 2, think_time: 300, attack_factor: 1.1, perwin: 10, winrate: 0.6 },	
-	peer3 : { level: 3, think_time: 10, attack_factor: 1.2, perwin: 20, winrate: 0.75 },	
-	peer4 : { level: 3, think_time: 500, attack_factor: 0.9, perwin: 40, wirate: 0.8 },	
-	peer5 : { level: 4, think_time: 1000, attack_factor: 1.1, perwin: 80, winrate: 1 }	
+	peer1 : { level: 1, think_time: 500, attack_factor: 1.0, perwin: 5, winrate: 0.5 },	
+	peer2 : { level: 2, think_time: 300, attack_factor: 1.0, perwin: 10, winrate: 0.6 },	
+	peer3 : { level: 3, think_time: 10, attack_factor: 1.1, perwin: 20, winrate: 0.75 },	
+	peer4 : { level: 3, think_time: 500, attack_factor: 0.95, perwin: 40, wirate: 0.8 },	
+	peer5 : { level: 4, think_time: 1000, attack_factor: 1.0, perwin: 80, winrate: 1 }	
 };
 
 var NPC_data_default = {
@@ -171,7 +169,7 @@ function restartGame(){
     board.exchangeFirstHand();
 	board.resetGame();
 
-    dialog = hotjs.domUI.popupDialog(hotjs.i18n.get('exchangefirsthand'),"",{'x':null},{dismiss:1500,top:20});
+    dialog = hotjs.domUI.popupDialog(hotjs.i18n.get('exchangefirsthand'),"",{'x':null},{top:100,dismiss:1500});
 }
 
 function onMyWin() {
@@ -182,14 +180,18 @@ function onMyWin() {
 		var npc_data = app_data.npc_data[ peerN ];
 
 		dialog = hotjs.domUI.popupDialog( 
-				hotjs.i18n.get('youwin'), 
+				"", 
 				"<img class='icon192' src='"+ __DIR__('img/win.png') + "'><p>" 
 				+ hotjs.i18n.get('youwin10gold').replace('10',npc.perwin) + '</p>',
 				{
 					'playagain':function(){
 						restartGame();
 						return true;
-					}
+					},
+					'nomore':function(){
+						return true;
+					},
+					x:null
 				} );
 		app_data.my.gold += npc.perwin;
 		app_data.my.total ++;
@@ -227,14 +229,18 @@ function onMyLost() {
 		var npc_data = app_data.npc_data[ peerN ];
 		
 		dialog = hotjs.domUI.popupDialog( 
-				hotjs.i18n.get('youlost'), 
+				"", 
 				"<img src='"+ __DIR__('img/peer' + app_data.opt.level + '-128.png') + "'><p>" 
 				+ hotjs.i18n.get('youlost10gold').replace('10', npc.perwin) + '</p>',
 				{
 					'playagain':function(){
 						restartGame();
 						return true;
-					}
+					},
+					'nomore':function(){
+						return true;
+					},
+					x:null
 				} );
 		
 		app_data.my.gold -= npc.perwin;
@@ -293,15 +299,16 @@ function onAIMessage(evt) {
 		
 		var s = msg.solution;
 		var t = s.topMoves;
-		var bestMove = s.bestMove;
-		//var bestMove = (s.topMoves.length>0) ? s.topMoves[0] : s.bestMove;
+		//var bestMove = s.bestMove;
+		var bestMove = (s.topMoves.length>0) ? s.topMoves[0] : s.bestMove;
 
 		if( ! board.gameOver ) {
 			var peerN = 'peer' + app_data.opt.level;
 			var npc = NPC_config[ peerN ];
 			var npc_data = app_data.npc_data[ peerN ];
-			//var tops = 'best: ' + Math.floor(bestMove[2]) + ', top: ';
-			//for(var i=0; i<t.length; i++) { tops += ' ' + Math.floor(t[i][2]); } console.log( tops );
+			
+			/*
+			// become stupid intensively ??
 			if( bestMove[2] >= 1000 ) { // must react if already 4, or too stupid
 				//console.log( 'block!' );
 			} else {
@@ -321,7 +328,7 @@ function onAIMessage(evt) {
 						break;
 					}
 				}
-			}
+			}*/
 			
 			if( msg.used_time < npc.think_time ) {
 				window.setTimeout( function(){
@@ -440,6 +447,16 @@ function updateDataShow() {
 	$('#peer-gold').text( npc_data.gold );
 }
 
+function toggleMusic(){
+	if(! app_data.opt.music ) {
+		hotjs.Audio.stop('bg');
+		$('img#icon-music').attr('src', __DIR__('img/musicoff.png') );
+	} else {
+		hotjs.Audio.loop('bg');
+		$('img#icon-music').attr('src', __DIR__('img/music.png') );
+	}
+};
+
 function toggleAudio(){
 	if( app_data.opt.mute ) {
         hotjs.Audio.mute(true);
@@ -458,7 +475,7 @@ function toggleTip( b ) {
 		dialog = hotjs.domUI.popupDialog( 
 				hotjs.i18n.get('tipon'), 
 				'<p>' + hotjs.i18n.get('tipcost1gold') + '</p>',
-				{}, {'top':'5px', dismiss:1500}, 'top' );
+				{}, {top:100, dismiss:1500}, 'top' );
 		
 		app_data.my.gold --;
 		save_data();
@@ -493,9 +510,9 @@ function payWithPaypalMPL( pkgid ) {
 			'showPayPalButton': -1,
 			'paymentCurrency' : currency,
 			'subTotal' : subTotal,
-			'recipient' : 'rnjsoft.mobile@gmail.com',
+			'recipient' : 'rjfun.mobile@gmail.com',
 			'description' : 'game coins (' + golds + ')',
-			'merchantName' : 'GomokuMist'
+			'merchantName' : 'RjFun'
 		}, function() {
 			ppm.pay({}, function() {
 				app_data.my.gold += golds;
@@ -619,7 +636,7 @@ function buyProduct( productId ) {
 		dialog = hotjs.domUI.popupDialog( 
 				hotjs.i18n.get('pkg0info'), 
 				"<img src='" + __DIR__('img/shrug.png') + "'><p>" 
-				+ msg + '</p>' );
+				+ msg + '<br/><br/></p>', {'ok':function(){return true;}, x:null} );
 	} else {
  		//hotjs.domUI.toggle( $('div#pagebuy')[0] );
 		
@@ -685,17 +702,15 @@ function watchAdGetGift() {
 	}	
 }
 
-    function togglePage( id ) {
-        var scrw = $(window).width(), scrh = $(window).height();
-        var o = $(id);
-        var w = o.width(), h = o.height();
-        o.css({'top': (scrh-h)/2 + 'px', 'left': (scrw-w)/2 + 'px'});
-        hotjs.domUI.toggle( o[0] );
-    }
+function togglePage( id ) {
+    var scrw = window.innerWidth, scrh = window.innerHeight;
+    var o = $(id);
+    var w = o.width(), h = o.height();
+    o.toggle();
+    o.css({'top': (scrh-h)/2, 'left': (scrw-w)/2});
+}
 
-
-
-    function popupNeedGoldDlg() {
+function popupNeedGoldDlg() {
 	if( dialog ) { dialog.dismiss(); dialog=null; }
 	dialog = hotjs.domUI.popupDialog( 
 			hotjs.i18n.get('nogold'), 
@@ -758,6 +773,186 @@ function showPlayerInfoDlg() {
 			});
 }
 
+function onClickStart(){
+	var step_count = Math.round(board.getStepCount() / 2);
+	if( board.gameOver || (step_count < 1) ){
+		restartGame();
+		
+	} else if ( step_count >= 30 ) {
+		dialog = hotjs.domUI.popupDialog( 
+				hotjs.i18n.get('giveup'),
+				"<img src='" + __DIR__('img/shrug.png') + "'><p>" + 
+				hotjs.i18n.get('confirmtie').replace('30', step_count) + "</p>",
+ 				{
+					'ok' : function() {
+						restartGame();
+						return true;
+					},
+					'cancel' : function() {
+						return true;
+					}
+				});	
+		
+	} else {
+		var peerN = 'peer' + app_data.opt.level;
+		var npc = NPC_config[ peerN ];
+		var npc_data = app_data.npc_data[ peerN ];
+		dialog = hotjs.domUI.popupDialog( 
+				hotjs.i18n.get('giveup'),
+				"<img src='" + __DIR__('img/shrug.png') + "'><p>" + 
+				hotjs.i18n.get('confirmgiveup').replace('20', step_count).replace('10', npc.perwin) + "</p>",
+ 				{
+					'ok' : function() {
+						app_data.my.gold -= npc.perwin;
+						app_data.my.total ++;
+						npc_data.total ++;
+						npc_data.win ++;
+						npc_data.gold += npc.perwin;
+						save_data();
+						
+						restartGame();
+						
+						return true;
+					},
+					'cancel' : function() {
+						return true;
+					}
+				});			
+	}
+}
+
+function onClickUndo(){
+	if( ! board.canUndo() ) {
+		if( dialog ) { dialog.dismiss(); dialog=null; }
+		dialog = hotjs.domUI.popupDialog( 
+				hotjs.i18n.get('notstarted'), 
+				"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('notstartedcannotdo') + '<br/><br/></p>', {x:null}, {top:100,dismiss:1500} );
+	} else if( board.gameOver ) {
+		if( dialog ) { dialog.dismiss(); dialog=null; }
+		dialog = hotjs.domUI.popupDialog( 
+				hotjs.i18n.get('gameover'), 
+				"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('gameovercannotdo') + '<br/><br/></p>', {x:null}, {top:100,dismiss:1500} );
+	} else if( board.canUndo() ) {
+		if( app_data.my.gold >= 3 ) {
+			board.undo();
+			if( dialog ) { dialog.dismiss(); dialog=null; }
+			dialog = hotjs.domUI.popupDialog(  hotjs.i18n.get('undook'),  "<p>" + hotjs.i18n.get('undocost3gold') + '<br/><br/></p>',  {x:null}, {top:100,dismiss:1500}, 'top' );
+			
+			app_data.my.gold -= 3;
+			save_data();
+			updateDataShow();
+		} else {
+			popupNeedGoldDlg();
+		}
+	}
+}
+
+function onTouchTip(){
+	if( ! board.canUndo() ) {
+		if( dialog ) { dialog.dismiss(); dialog=null; }
+		dialog = hotjs.domUI.popupDialog( 
+				hotjs.i18n.get('notstarted'), 
+				"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('notstartedcannotdo') + '<br/><br/></p>', {x:null},{top:100,dismiss:1500} );
+	} else if( board.gameOver ) {
+		if( dialog ) { dialog.dismiss(); dialog=null; }
+		dialog = hotjs.domUI.popupDialog( 
+				hotjs.i18n.get('gameover'), 
+				"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('gameovercannotdo') + '<br/><br/></p>', {x:null},{top:100,dismiss:1500} );
+	} else if ( app_data.my.gold >= 1 ) {
+		toggleTip(! board.getTipStatus() );
+	} else {
+		popupNeedGoldDlg();
+	}
+}
+
+function onClickChar(){
+	var char_id = $(this).attr('v');
+	var peerN = 'peer' + char_id;
+	var npc = NPC_config[ peerN ];
+	
+	dialog = hotjs.domUI.popupDialog( 
+			hotjs.i18n.get(peerN),
+			genBriefInfo( char_id ) + hotjs.i18n.get('confirmfight'),
+				{
+				'ok' : function() {
+					app_data.opt.level = char_id;
+					save_data();
+					
+					ai_agent.setCharStyle( {
+						level: npc.level,
+						think_time: npc.think_time,
+						attack_factor: npc.attack_factor
+					});
+
+					updateDataShow();
+					
+					hotjs.domUI.toggle( $('div#pageopt')[0] );
+					return true;
+				},
+				'cancel' : function() {
+                    $('div#pagechar').show();
+					return true;
+				},
+				x:null
+			});
+	
+}
+
+function onClickResetData(){
+	
+	dialog = hotjs.domUI.popupDialog( 
+			hotjs.i18n.get('resetdata'), 
+			"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('resetdatalosthistory') + '</p>',
+				{
+				'ok' : function() {
+//					app_data = {};
+//					save_data();
+//					app_data = load_data();
+					
+					app_data.my.total = 0;
+					app_data.my.win = 0;
+					app_data.my.gold -= 100;
+					save_data();
+					
+					updateDataShow();
+					
+					return true;
+				},
+				'cancel' : function() {
+					return true;
+				},
+				x:null
+			});
+	
+	
+}
+
+function onClickAbout(){
+	$('div#pageaboutinfo').html( hotjs.i18n.get('about_text') );
+	togglePage('div#pageabout');
+}
+
+function genBriefInfo( char_id ) {
+	var peerN = 'peer' + char_id;
+	var npc = NPC_config[ peerN ];
+	return "<img src='" + __DIR__('img/peer' + char_id + '-128.png') + "'><p>" 
+		+ hotjs.i18n.get('peer' + char_id + 'desc') + '</p><p>'
+		+ hotjs.i18n.get('winlost10gold').replace('10', npc.perwin) + '</p>';
+}
+
+function onClickPeerHead(){
+	if( dialog ) { dialog.dismiss(); dialog=null; }
+	var char_id = app_data.opt.level;
+	dialog = hotjs.domUI.popupDialog( 
+			hotjs.i18n.get( 'peer' + char_id ), genBriefInfo( char_id ),
+			{
+				'selectpeer' : function() {
+					togglePage('div#pagechar');
+					return true;
+				}
+			});
+}
+
 function init_events() {
 	$(window).resize( game_resize );
 	
@@ -772,100 +967,9 @@ function init_events() {
 	document.addEventListener( 'onPresentAd', watchAdGetGift );
 	document.addEventListener( 'onLeaveToAd', watchAdGetGift );
 
-	$('.icon-start').on('click', function(){
-		var step_count = Math.round(board.getStepCount() / 2);
-		if( board.gameOver || (step_count < 1) ){
-			restartGame();
-			
-		} else if ( step_count >= 30 ) {
-			dialog = hotjs.domUI.popupDialog( 
-					hotjs.i18n.get('giveup'),
-					"<img src='" + __DIR__('img/shrug.png') + "'><p>" + 
-					hotjs.i18n.get('confirmtie').replace('30', step_count) + "</p>",
-	 				{
-						'ok' : function() {
-							restartGame();
-							return true;
-						},
-						'cancel' : function() {
-							return true;
-						}
-					});	
-			
-		} else {
-			var peerN = 'peer' + app_data.opt.level;
-			var npc = NPC_config[ peerN ];
-			var npc_data = app_data.npc_data[ peerN ];
-			dialog = hotjs.domUI.popupDialog( 
-					hotjs.i18n.get('giveup'),
-					"<img src='" + __DIR__('img/shrug.png') + "'><p>" + 
-					hotjs.i18n.get('confirmgiveup').replace('20', step_count).replace('10', npc.perwin) + "</p>",
-	 				{
-						'ok' : function() {
-							app_data.my.gold -= npc.perwin;
-							app_data.my.total ++;
-							npc_data.total ++;
-							npc_data.win ++;
-							npc_data.gold += npc.perwin;
-							save_data();
-							
-							restartGame();
-							
-							return true;
-						},
-						'cancel' : function() {
-							return true;
-						}
-					});			
-		}
-	});
-	
-	$('.icon-undo').on('click', function(){
-		if( ! board.canUndo() ) {
-			if( dialog ) { dialog.dismiss(); dialog=null; }
-			dialog = hotjs.domUI.popupDialog( 
-					hotjs.i18n.get('notstarted'), 
-					"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('notstartedcannotdo') + '</p>', {}, {dismiss:2000} );
-		} else if( board.gameOver ) {
-			if( dialog ) { dialog.dismiss(); dialog=null; }
-			dialog = hotjs.domUI.popupDialog( 
-					hotjs.i18n.get('gameover'), 
-					"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('gameovercannotdo') + '</p>', {}, {dismiss:2000} );
-		} else if( board.canUndo() ) {
-			if( app_data.my.gold >= 3 ) {
-				board.undo();
-				if( dialog ) { dialog.dismiss(); dialog=null; }
-				dialog = hotjs.domUI.popupDialog( 
-					hotjs.i18n.get('undook'), 
-					"<p>" + hotjs.i18n.get('undocost3gold') + '</p>', 
-					{}, {'top':'100px',dismiss:1500}, 'top' );
-				
-				app_data.my.gold -= 3;
-				save_data();
-				updateDataShow();
-			} else {
-				popupNeedGoldDlg();
-			}
-		}
-	});
-
-	$('.icon-tip').on(touch_event, function(){
-		if( ! board.canUndo() ) {
-			if( dialog ) { dialog.dismiss(); dialog=null; }
-			dialog = hotjs.domUI.popupDialog( 
-					hotjs.i18n.get('notstarted'), 
-					"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('notstartedcannotdo') + '</p>', {},{dismiss:2000} );
-		} else if( board.gameOver ) {
-			if( dialog ) { dialog.dismiss(); dialog=null; }
-			dialog = hotjs.domUI.popupDialog( 
-					hotjs.i18n.get('gameover'), 
-					"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('gameovercannotdo') + '</p>', {},{dismiss:2000} );
-		} else if ( app_data.my.gold >= 1 ) {
-			toggleTip(! board.getTipStatus() );
-		} else {
-			popupNeedGoldDlg();
-		}
-	});
+	$('.icon-start').on('click', onClickStart);
+	$('.icon-undo').on(touch_event, onClickUndo);
+	$('.icon-tip').on(touch_event, onTouchTip);
 	
     $('.pagemenu, .menu, .pagemenu_x').on('click' , function(){
         togglePage('div#pagemenu');
@@ -888,13 +992,11 @@ function init_events() {
 		buyProduct( productId );
 	});
 
-    $('.pageabout').on('click', function(){
-        if( dialog ) { dialog.dismiss(); dialog=null; }
-        dialog = hotjs.domUI.popupDialog(
-                hotjs.i18n.get('gamename') + ', v' + app_version,
-                "<table><tr><td class='m'><img class='icon128 round' src='" + __DIR__('img/icon256.png') +  "'><br/>" + hotjs.i18n.get('about_text') + "</td></tr></table>"
-        );
-    });
+    $('.pageabout').on('click', onClickAbout);
+    
+	$('div#pageabout').on('click', function(){
+		togglePage('div#pageabout');
+	});
 
     $('button#btn_gamerule').on(touch_event, function(){
 		if( dialog ) { dialog.dismiss(); dialog=null; }
@@ -914,87 +1016,23 @@ function init_events() {
 		if( dialog ) { dialog.dismiss(); dialog=null; }
 		showWelcomeDlg();
 	});
-	$('button#btn_yourinfo').on('click', function(){
+	$('button#btn_yourinfo, img#my-img').on('click', function(){
 		if( dialog ) { dialog.dismiss(); dialog=null; }
 		showPlayerInfoDlg();
 	});
-	$('button#btn_toplist').on('click', function(){
-		if( dialog ) { dialog.dismiss(); dialog=null; }
-		dialog = hotjs.domUI.popupDialog( 
-				hotjs.i18n.get('toplist'), 
-				"<table>" + 
-				"<tr><td><button id='btn_topgold' class='dialog button yellow'>" + hotjs.i18n.get('topgold') + "</button></td>" +
-				"<td><button id='btn_topwin' class='dialog button green'>" + hotjs.i18n.get('topwin') + "</button></td>" +
-				"<td><button id='btn_toprate' class='dialog button cyan'>" + hotjs.i18n.get('toprate') + "</button></td><tr>" + 
-				"<tr><td colspan=3>" + hotjs.i18n.get('comingsoon') + "</td></tr>" +
-				"</table>" );
-	});
 
-	function genBriefInfo( char_id ) {
-		var peerN = 'peer' + char_id;
-		var npc = NPC_config[ peerN ];
-		return "<img src='" + __DIR__('img/peer' + char_id + '-128.png') + "'><p>" 
-			+ hotjs.i18n.get('peer' + char_id + 'desc') + '</p><p>'
-			+ hotjs.i18n.get('winlost10gold').replace('10', npc.perwin) + '</p>';
-	}
-
-	$('img#peer-img').on(touch_event, function(){
-		if( dialog ) { dialog.dismiss(); dialog=null; }
-		var char_id = app_data.opt.level;
-		dialog = hotjs.domUI.popupDialog( 
-				hotjs.i18n.get( 'peer' + char_id ), genBriefInfo( char_id ),
-				{
-					'selectpeer' : function() {
-						togglePage('div#pagechar');
-						return true;
-					}
-				});
-	});
+	$('img#peer-img').on(touch_event, onClickPeerHead);
 	
-	$('img#my-img').on('click', function(){
-		if( dialog ) { dialog.dismiss(); dialog=null; }
-		showPlayerInfoDlg();
-	});
+	$('.btn-char').on('click', onClickChar);
 
-	$('img.btn-char').on('click', function(){
-		var char_id = $(this).attr('v');
-		var peerN = 'peer' + char_id;
-		var npc = NPC_config[ peerN ];
-		
-		dialog = hotjs.domUI.popupDialog( 
-				hotjs.i18n.get(peerN),
-				genBriefInfo( char_id ) + hotjs.i18n.get('confirmfight'),
- 				{
-					'ok' : function() {
-						app_data.opt.level = char_id;
-						save_data();
-						
-						ai_agent.setCharStyle( {
-							level: npc.level,
-							think_time: npc.think_time,
-							attack_factor: npc.attack_factor
-						});
-
-						updateDataShow();
-						
-						hotjs.domUI.toggle( $('div#pageopt')[0] );
-						return true;
-					},
-					'cancel' : function() {
-                        $('div#pagechar').show();
-						return true;
-					}
-				});
-		
-	});
-
-	$('button.btn-size').on('click', function(){
+	$('.btn-size').on('click', function(){
 		app_data.opt.size = $(this).attr('v');
 		save_data();
 		
 		hotjs.domUI.toggle( $('div#pageopt')[0] );
 		
-		board.resetGame( app_data.opt.size );
+		board.setRow( app_data.opt.size );
+		board.resetGame();
 	});
 	
 	$('img#icon-audio').on('click', function(){
@@ -1018,33 +1056,22 @@ function init_events() {
 		toggleAd();
 	});
 
-	$('img#icon-reset').on('click', function(){
+	$('img#icon-reset').on('click', onClickResetData);
 	
-		dialog = hotjs.domUI.popupDialog( 
-				hotjs.i18n.get('resetdata'), 
-				"<img src='" + __DIR__('img/shrug.png') + "'><p>" + hotjs.i18n.get('resetdatalosthistory') + '</p>',
- 				{
-					'ok' : function() {
-//						app_data = {};
-//						save_data();
-//						app_data = load_data();
-						
-						app_data.my.total = 0;
-						app_data.my.win = 0;
-						app_data.my.gold -= 100;
-						save_data();
-						
-						updateDataShow();
-						
-						return true;
-					},
-					'cancel' : function() {
-						return true;
-					}
-				});
-		
-		
+	$('#btn_quit').on('click', function(){
+		hotjs.Audio.stop('bg');
+		navigator.app.exitApp();
 	});
+	
+	document.addEventListener("pause", function(){
+		//hotjs.Audio.pause();
+		hotjs.Audio.stop('bg');
+	}, false);
+	
+	document.addEventListener("resume", function(){
+		//hotjs.Audio.resume();
+		if(app_data.opt.music) hotjs.Audio.loop('bg');
+	}, false);
 }
 
 function game_resize(w, h) {
@@ -1107,113 +1134,11 @@ function game_resize(w, h) {
 	}
 }
 
-function packDialogHTML( dlg_id, content ) {
-	var ret = 
-"<div id='" + dlg_id + "' class='dialog round' popup='true' style='display:none;'>\
-<table class='dialog' cellspacing='0' cellpadding='0'>\
-<tr><td class='dlg00'></td><td class='dlg01 m'></td><td class='dlg02'><img class='dlgx " + dlg_id + "_x' src='" + __DIR__('img/x.png') + "'></td></tr>\
-<tr><td class='dlg10'></td><td class='dlg11 m'><div class='dlg11'>" + content + "</div><br/>&nbsp;</td><td class='dlg12'></td></tr>\
-<tr><td class='dlg20'></td><td class='dlg21'></td><td class='dlg22'></td></tr>\
-</table></div>";
-	return ret;
-}
-
-function init_UI() {
-	var pagemain = document.getElementById('pagemain');
-	pagemain.innerHTML = '';
-	
-	pagemain.innerHTML +=
-"<div id='gameView' class='full' style='display:block;'></div>\
-<div id='user1' class='userinfo round shadow'>\
-<table class='m'>\
-<tr>\
-<td><img id='my-img' class='icon32 clickable' src='" + __DIR__('img/user2.png') + "'></td>\
-<td><img class='icon32' src='" + __DIR__('img/gold.png') + "'><br/><span id='my-gold'>1800</span></td>\
-<td><img id='my-gocolor' class='icon32' src='" + __DIR__('img/blackgo.png') + "'/></td>\
-</tr>\
-</table></div>\
-<div id='user2' class='userinfo round shadow'>\
-<table class='m'>\
-<tr>\
-<td><img id='peer-gocolor' class='icon32' src='" + __DIR__('img/whitego.png') + "'/></td>\
-<td><img class='icon32' src='" + __DIR__('img/gold.png') + "'><br/><span id='peer-gold'>1500</span></td>\
-<td><img id='peer-img' class='icon32 clickable' src='" + __DIR__('img/user1.png') + "'></td>\
-</tr>\
-</table>\
-</div>";
-	
-	pagemain.innerHTML += 
-"<div id='controlleft' class='control'>\
-<table class='control' cellspacing='5'>\
-<tr><td class='m vm btn clickable pagemenu'><img class='icon48' src='" + __DIR__('img/menu.png') + "'/><br/><span class='I18N' i18n='menu'>Menu</span></td>\
-<td class='m vm btn clickable pagebuy'><img class='icon48' src='" + __DIR__('img/gold.png') + "'/><br/><span class='I18N' i18n='buy'>Coins</span></td></tr>\
-</table></div>\
-<div id='controlright' class='control'>\
-<table class='control' cellspacing='5'>\
-<tr><td class='m vm btn clickable icon-tip'><img class='icon48' src='" + __DIR__('img/tipon.png') + "'/><br/><span class='I18N' i18n='tips'>Tips</span></td>\
-<td class='m vm btn clickable icon-undo'><img class='icon48' src='" + __DIR__('img/undo.png') + "'/><br/><span class='I18N' i18n='undo'>Undo</span></td></tr>\
-</table></div>";
-
-
-    pagemain.innerHTML += packDialogHTML( 'pagemenu',
-"<table>\
-<tr><td><button class=' clickable menu button cyan icon-start' id='btn_new'>" + hotjs.i18n.get('new') + "</button></td></td>\
-<tr><td><button class=' clickable menu button cyan pagechar' id='btn_char'>" + hotjs.i18n.get('selectpeer') + "</button></td><tr>\
-<tr><td><button class=' clickable menu button cyan pageopt' id='btn_options'>" + hotjs.i18n.get('options') + "</button></td><tr>\
-<tr><td><button class=' clickable menu button cyan pageabout' id='btn_about'>" + hotjs.i18n.get('about') + "</button></td><tr>\
-</table>" );
-
-    pagemain.innerHTML += packDialogHTML( 'pagechar',
-"<table class='m full'>\
-<tr><td></td><td><span class='I18N' i18n='selectpeer'>Select</span></td><td class='r'></td></tr>\
-<tr>\
-<td><img class='btn-char icon64 clickable' v='1' src='" + __DIR__('img/peer1-64.png') +"'/><br/><span class='I18N' i18n='peer1'>Kid</span></td>\
-<td></td><td><img class='btn-char icon64 clickable' v='3' src='" + __DIR__('img/peer3-64.png') +"'/><br/><span class='I18N' i18n='peer3'>Boy</span></td></tr>\
-<tr><td></td><td><img class='btn-char icon64 clickable' v='2' src='" + __DIR__('img/peer2-64.png') +"'/><br/><span class='I18N' i18n='peer2'>Girl</span></td><td></td></tr>\
-<tr><td><img class='btn-char icon64 clickable' v='4' src='" + __DIR__('img/peer4-64.png') +"'/><br/><span class='I18N' i18n='peer4'>Uncle</span></td>\
-<td></td><td><img class='btn-char icon64 clickable' v='5' src='" + __DIR__('img/peer5-64.png') +"'/><br/><span class='I18N' i18n='peer5'>Grandpa</span></td>\
-</table>" );
-
-    pagemain.innerHTML += packDialogHTML( 'pageopt',
-"<table class='m full'>\
-<tr><td colspan=4 style='text-align:left'><span  class='I18N' i18n='boardsize'>Board Size</span></td></tr>\
-<tr>\
-<td><button class='btn-size clickable set button rosy' v='11'>11</button></td>\
-<td><button class='btn-size clickable set button yellow' v='13'>13</button></td>\
-<td><button class='btn-size clickable set button green' v='15'>15</button></td>\
-<td><button class='btn-size clickable set button cyan' v='17'>17</button></td>\
-<td><button class='btn-size clickable set button blue' v='19'>19</button></td>\
-</tr>\
-<!--tr>\
-<td style='text-align:right'><span  class='I18N' i18n='music'>Music</span></td>\
-<td><img id='icon-music' class='icon clickable' src='" + __DIR__('img/music.png') + "' width='32'></td>\
-<td colspan=2 style='text-align:right'><span  class='I18N' i18n='ad'>Ad</span></td>\
-<td><img id='icon-ad' class='icon clickable' src='" + __DIR__('img/ad.png') + "' width='32'></td>\
-</tr-->\
-<tr>\
-<td style='text-align:right'><span  class='I18N' i18n='audio'>Audio</span></td>\
-<td><img id='icon-audio' class='icon clickable' src='" + __DIR__('img/audio.png') + "' width='32'></td>\
-<td colspan=2 style='text-align:right'><span  class='I18N' i18n='resetdata'>Reset Data</span></td>\
-<td><img id='icon-reset' class='icon clickable' src='" + __DIR__('img/reset.png') + "' width='32'></td>\
-</tr>\
-</table>" );
-	
-	pagemain.innerHTML += packDialogHTML( 'pagebuy', 
-"<table>\
-<tr><td colspan=3 class='m'><span class='I18N' i18n='buyhappy'>Buy Happy</span></td></tr>\
-<tr><td><img class='icon32' src='" + __DIR__('img/gold.png') +"'/></td><td class='l I18N' i18n='pkg0'>100 golds</td><td><button id='pkg0' class=' clickable button cyan btn-buy I18N' i18n='pkg0price'>Get It</button></td></tr>\
-<tr><td><img class='icon48' src='" + __DIR__('img/gold2.png') +"'/></td><td class='l I18N' i18n='pkg1'>500 golds</td><td><button id='pkg1' class=' clickable button green btn-buy I18N' i18n='pkg1price'>$ 1</button></td></tr>\
-<tr><td><img class='icon48' src='" + __DIR__('img/gold3.png') +"'/></td><td class='l I18N' i18n='pkg2'>2000 golds</td><td><button id='pkg2' class=' clickable button yellow btn-buy I18N' i18n='pkg2price'>$ 2</button></td></tr>\
-<tr><td><img class='icon48' src='" + __DIR__('img/gold4.png') +"'/></td><td class='l I18N' i18n='pkg3'>10000 golds</td><td><button id='pkg3' class=' clickable button gold btn-buy I18N' i18n='pkg3price'>$ 6</button></td></tr>\
-</table>" );
-}
-
 var app = new hotjs.App();
 
 function game_main() {
 	
 	load_data();
-	init_UI();
 	init_events();
 	
 	var w = window.innerWidth, h = window.innerHeight;
@@ -1262,7 +1187,7 @@ function game_main() {
 	game_resize();
 	updateDataShow();
 	toggleAudio();
-//	toggleMusic();
+	toggleMusic();
 	
 	app.addNode(gameView).start();
 
@@ -1271,9 +1196,11 @@ function game_main() {
 	var tUsed = tLoadingDone - tLoadingStart;
 	var tWait = ( tUsed < splash_time ) ? (splash_time - tUsed) : 10; 
 	window.setTimeout( function() {
-		hotjs.domUI.showSplash( false );
-
+		$('div#splash').hide();
+		$('div#pagemain').show();
+		
         hotjs.require( autorun_url );
+        
 //		toggleAd();
 //		if( ! app_data.opt.get_gift ) {
 //			window.setTimeout( showWelcomeDlg, 2000 );		
@@ -1283,7 +1210,6 @@ function game_main() {
 
 var res = 
 [
-   __DIR__('game.css'),
    __DIR__('lang/en.lang.js'),
    __DIR__('lang/zh.lang.js'),
    __DIR__('lang/ja.lang.js'), 
@@ -1346,6 +1272,7 @@ function loadApp() {
     if((w <= 640) && (h <= w * 1.5)) {
         // iphone, screen not long enough
         //$('p.game-explanation').hide();
+    	$('div.userinfo').css({top:5});
     } else {
         hotjs.Ad.init( ad_options );
     }
@@ -1363,21 +1290,18 @@ function loadApp() {
         win : 'audio/win.mp3',
         fail : 'audio/fail.mp3',
         move1 : 'audio/move.mp3',
-        move2 : 'audio/move2.mp3'
+        move2 : 'audio/move.mp3'
     }
     hotjs.Audio.init();
     hotjs.Audio.preloadFXBatch( fx );
+    
+    hotjs.Audio.preloadAudio('bg', 'audio/music_bg.mp3', 1, 1.0 );
 
     resources.load( res, { ready: game_main } );
 }
 
 function main()
 {
-    // show logo
-	hotjs.domUI.showSplash( true, 
-			"<h1 class='I18N' i18n='gamename'>GOMOKU</h1><img class='logo' src='" + __DIR__('img/icon256.png') + "'/><h3>&copy; RjFun</h3>",
-			{'background':'white'} );
-
     if(isMobileDevice()) {
         document.addEventListener('deviceready', loadApp, false);
     } else {

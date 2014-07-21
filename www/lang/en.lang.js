@@ -16,6 +16,7 @@ hotjs.i18n.put('en', {
 	'youwin': 'You win!',
 	'youwin10gold':'Congratulations! You win 10 golds!',
 	'playagain':'Play Again',
+	'nomore':'No More',
 	'giveup' : 'Give Up',
 	'confirmgiveup' : 'You only went 20 steps.<br/>Judged as losing if give up before 30.<br/></br>Really give up?',	
 	'confirmtie' : 'You went 30 steps.<br/>No win or lose if give up now.</br>Give up?',	
