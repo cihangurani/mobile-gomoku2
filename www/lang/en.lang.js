@@ -5,6 +5,7 @@ hotjs.i18n.put('en', {
 	'options': 'Options',
 	'more':	'More',
 	'welcome':'Welcome',
+	'backgame':'Back Game',
 	'gift_picked' : 'You have picked the free gift.',
 	'info':'Info',
 	'welcometogomoku':'Hi! I am Ginny. <br/><br/>You will meet my family.<br/>Do you know? we are all gomoku players.<br/><br/>Click to start Gomoku Journey.<br/>You can get 100 golds as gift.<br/>',
