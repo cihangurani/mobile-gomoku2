@@ -5,6 +5,7 @@ hotjs.i18n.put('zh', {
 	'options': '选项设置',
 	'more':	'更多',
 	'welcome':'欢迎',
+	'confirmquit':'要退出游戏吗？',
 	'backgame':'回到游戏',
 	'gift_picked' : '见面礼物 100 个金币，您已经领取过了！',
 	'info':'信息',
