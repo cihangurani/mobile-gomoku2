@@ -1092,7 +1092,7 @@ function game_resize() {
     	$('.adspace').css({height:5});
     }
     
-    if( isIOSDevice() ) {
+    if( ! isAndroidDevice() ) {
     	$('button#btn_quit').hide();
     }
 
