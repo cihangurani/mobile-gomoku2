@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	id="com.rjfun.cordova.plugin.easyadmob"
+	version="1.0.1">
+      
+    <name>EasyAdMob</name>
+	<description>Easiest way to dd AdMob support to cordova apps, less code, smaller package</description>
+	<author>Liming Xie</author>
+	<license>MIT</license>
+	<keywords>easyadmob,ad,admob,iad,rjfun</keywords>
+    <repo>https://github.com/floatinghotpot/cordova-plugin-easyadmob.git</repo>
+    <issue>https://github.com/floatinghotpot/cordova-plugin-easyadmob/issues</issue>
+
+	<engines>
+	    <engine name="cordova" version=">=2.9" />
+	</engines>
+
+    <js-module src="www/EasyAdMob.js" name="EasyAdMob">
+        <clobbers target="window.plugins.EasyAdMob" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+    	<dependency id="com.google.admobsdk-googleplay" version=">=4.4.0"/>
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="EasyAdMob">
+                <param name="android-package" value="com.rjfun.cordova.plugin.EasyAdMob"/>
+            </feature>
+        </config-file>
+        <source-file src="src/android/EasyAdMob.java" target-dir="src/com/rjfun/cordova/plugin" />
+     </platform>
+     
+     <!-- ios -->
+     <platform name="ios">
+    	 <dependency id="com.google.admobsdk-ios" version=">=6.10.0"/>
+         <config-file target="config.xml" parent="/*">
+             <feature name="EasyAdMob">
+                 <param name="ios-package" value="CDVEasyAdMob" />
+             </feature>
+         </config-file>
+         
+         <header-file src="src/ios/CDVEasyAdMob.h" />
+         <source-file src="src/ios/CDVEasyAdMob.m" />
+
+ 	     <framework src="StoreKit.framework" />
+ 	     <framework src="AudioToolbox.framework" />
+         <framework src="MessageUI.framework" />
+         <framework src="SystemConfiguration.framework" />
+         <framework src="CoreGraphics.framework" />
+         <framework src="AdSupport.framework" />
+         <framework src="CoreTelephony.framework" />
+ 	     
+	</platform>
+
+  <!-- Windows Phone 8 -->
+  <platform name="wp8">
+    	 <dependency id="com.google.admobsdk-wp" version=">=6.5.13"/>
+    <config-file target="config.xml" parent="/*">
+      <feature name="EasyAdMob">
+        <param name="wp-package" value="EasyAdMob"/>
+      </feature>
+    </config-file>
+    <source-file src="src/wp8/EasyAdMob.cs" />
+  </platform>
+
+</plugin>

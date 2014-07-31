@@ -1,0 +1,22 @@
+{
+    "version": "6.10.0",
+    "name": "com.google.admobsdk-ios",
+    "cordova_name": "AdMob SDK for iOS",
+    "description": "add AdMob SDK to cordova project, as dependency of other plugins",
+    "keywords": [
+        "admobsdk",
+        "google",
+        "admob",
+        "ad",
+        "sdk"
+    ],
+    "platforms": [
+        "ios"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}

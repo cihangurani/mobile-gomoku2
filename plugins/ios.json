@@ -22,31 +22,31 @@
                     "AudioToolbox.framework": [
                         {
                             "xml": "false",
-                            "count": 2
+                            "count": 3
                         }
                     ],
                     "StoreKit.framework": [
                         {
                             "xml": "false",
-                            "count": 2
+                            "count": 3
                         }
                     ],
                     "MessageUI.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "SystemConfiguration.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "CoreGraphics.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "AdSupport.framework": [
@@ -58,15 +58,10 @@
                     "CoreTelephony.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
-                    "iAd.framework": [
-                        {
-                            "xml": "true",
-                            "count": 1
-                        }
-                    ]
+                    "iAd.framework": []
                 }
             },
             "config.xml": {
@@ -77,15 +72,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"AdMob\"><param name=\"ios-package\" value=\"CDVAdMob\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"iAd\"><param name=\"ios-package\" value=\"CDViAd\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"InAppPurchaseManager\"><param name=\"ios-package\" value=\"InAppPurchaseManager\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"EasyAdMob\"><param name=\"ios-package\" value=\"CDVEasyAdMob\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -94,21 +85,19 @@
         }
     },
     "installed_plugins": {
-        "com.google.playservices": {
-            "PACKAGE_NAME": "com.rjfun.gomoku2"
-        },
         "com.rjfun.cordova.plugin.lowlatencyaudio": {
-            "PACKAGE_NAME": "com.rjfun.gomoku2"
-        },
-        "com.rjfun.cordova.plugin.admob": {
-            "PACKAGE_NAME": "com.rjfun.gomoku2"
-        },
-        "com.rjfun.cordova.plugin.iad": {
             "PACKAGE_NAME": "com.rjfun.gomoku2"
         },
         "com.rjfun.cordova.plugin.appleiap": {
             "PACKAGE_NAME": "com.rjfun.gomoku2"
+        },
+        "com.rjfun.cordova.plugin.easyadmob": {
+            "PACKAGE_NAME": "com.rjfun.gomoku2"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "com.google.admobsdk-ios": {
+            "PACKAGE_NAME": "com.rjfun.gomoku2"
+        }
+    }
 }

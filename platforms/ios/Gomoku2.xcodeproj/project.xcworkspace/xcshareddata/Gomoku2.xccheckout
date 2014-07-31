@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C8A84751-FAD0-423A-BBCC-ECB149B4E0A3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Gomoku2</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6C8ED936-BF92-47D4-A3B6-52416E56C8C5</key>
+		<string>ssh://github.com/floatinghotpot/mobile-gomoku2.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/Gomoku2.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6C8ED936-BF92-47D4-A3B6-52416E56C8C5</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/floatinghotpot/mobile-gomoku2.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6C8ED936-BF92-47D4-A3B6-52416E56C8C5</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6C8ED936-BF92-47D4-A3B6-52416E56C8C5</string>
+			<key>IDESourceControlWCCName</key>
+			<string>gomoku2</string>
+		</dict>
+	</array>
+</dict>
+</plist>
